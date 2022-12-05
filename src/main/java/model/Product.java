@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Data
 @AllArgsConstructor
-public class Product { //TODO: добивить аннотации Jackson для сериализации/десериализации
+public class Product {
     @JsonProperty("id")
     private @NotNull Integer id;
 

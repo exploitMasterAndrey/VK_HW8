@@ -3,6 +3,7 @@ package api;
 import com.google.inject.Inject;
 import dao.FactoryDao;
 import dao.ProductDao;
+import model.Factory;
 import model.Product;
 
 import javax.ws.rs.*;
@@ -56,5 +57,19 @@ public final class ProductApi {
         return Response.ok(new String(data))
                 .header(HttpHeaders.CACHE_CONTROL, "no-cache")
                 .build();
+    }
+
+    @POST
+    @Path("/create")
+    public Response createProduct(@QueryParam("name") String name, @QueryParam("factoryName") String factoryName, @QueryParam("count") Integer count){
+        Factory factory = factoryDao.read(factoryName);
+        if (factory == null){
+            String rand = String.valueOf((Math.random() * (100 - 1)) + 1);
+            String address = "address" + rand;
+            factoryDao.create(new Factory(factoryName, address));
+        }
+
+        productDao.create(new Product(0, name, factoryName, count));
+        return Response.ok().build();
     }
 }
